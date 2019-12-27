@@ -15,7 +15,7 @@
         "value": "{}"
       },
       "appInsightsName": {
-        "value": "perficient-cle-appinsights-twilio-dev"
+        "value": "perficient-cle-appinsights-test-dev"
       },
       "appInsightsId": {
         "value": "/subscriptions/5678-cbcc-4763-afb6-6f27bba693f1/resourceGroups/perficient-cle-resourcegroup-dev/providers/Microsoft.Insights/components/perficient-cle-appinsights-dev"
