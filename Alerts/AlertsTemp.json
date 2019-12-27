@@ -1,0 +1,100 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "alertName": {
+      "type": "string"
+    },
+    "alertDesc": {
+      "type": "string"
+    },
+    "emailSubject": {
+      "type": "string"
+    },
+    "customWebhookPayload": {
+      "type": "string"
+    },
+    "appInsightsName": {
+      "type": "string"
+    },
+    "appInsightsId": {
+      "type": "string"
+    },
+    "queryType": {
+      "type": "string",
+      "defaultValue": "ResultCount"
+    },
+    "triggerThresholdOperator": {
+      "type": "string",
+      "defaultValue": "GreaterThan",
+      "allowedValues": [ "GreaterThan", "Equal", "LessThan" ]
+    },
+    "triggerThreshold": {
+      "type": "int"
+    },
+    "frequencyInMinutes": {
+      "type": "int",
+      "defaultValue": 5
+    },
+    "timeWindowInMinutes": {
+      "type": "int",
+      "defaultValue": 5
+    },
+    "severityLevel": {
+      "type": "string",
+      "defaultValue": "0"
+    },
+    "actionGroupName": {
+      "type": "array"
+    },
+    "alertEnabled": {
+      "type": "string",
+      "defaultValue": "true"
+    },
+    "appInsightsQuery": {
+      "type": "string"
+    }
+  },
+  "resources": [
+  {
+      "name": "[parameters('alertName')]",
+      "apiVersion": "2018-04-16",
+      "type":"Microsoft.Insights/scheduledQueryRules",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "[concat('hidden-link:', resourceId('microsoft.insights/components', parameters('appInsightsName')))]": "Resource"
+      },
+    "properties": {
+      "description": "[parameters('alertDesc')]",
+      "enabled": "[parameters('alertEnabled')]",
+      "skuType": "L1",
+      "source": {
+        "query": "[parameters('appInsightsQuery')]",
+        "dataSourceId": "[parameters('appInsightsId')]",
+        "queryType": "[parameters('queryType')]"
+      },
+      "schedule": {
+        "frequencyInMinutes": "[parameters('frequencyInMinutes')]",
+        "timeWindowInMinutes": "[parameters('timeWindowInMinutes')]"
+      },
+        "action": {
+          "severity": "[parameters('severityLevel')]",
+          "status": "Active",
+          "aznsAction": {
+            "actionGroup": 
+              "[parameters('actionGroupName')]"
+            ,
+            "emailSubject": "[parameters('emailSubject')]",
+            "customWebhookPayload": "[parameters('customWebhookPayload')]"
+          },
+          "trigger": {
+            "thresholdOperator": "[parameters('triggerThresholdOperator')]",
+            "threshold": "[parameters('triggerThreshold')]",
+            "consecutiveBreach": 1
+          },
+          "odata.type": "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction"
+      }
+     }
+    }
+  ]
+}

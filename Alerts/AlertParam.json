@@ -1,0 +1,47 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "alertName": {
+        "value": "perficient-internal-errorcode-dev"
+      },
+      "alertDesc": {
+        "value": "Tracking specific error codes"
+      },
+      "emailSubject": {
+        "value": "MSO Flex: Error Code"
+      },
+      "customWebhookPayload": {
+        "value": "{}"
+      },
+      "appInsightsName": {
+        "value": "perficient-cle-appinsights-twilio-dev"
+      },
+      "appInsightsId": {
+        "value": "/subscriptions/5678-cbcc-4763-afb6-6f27bba693f1/resourceGroups/perficient-cle-resourcegroup-dev/providers/Microsoft.Insights/components/perficient-cle-appinsights-dev"
+      },
+      "triggerThresholdOperator": {
+        "value": "GreaterThan"
+      },
+      "triggerThreshold": {
+        "value": 0
+      },
+      "frequencyInMinutes": {
+        "value":15
+      },
+      "timeWindowInMinutes": {
+        "value": 15
+      },
+      "severityLevel": {
+        "value": "0"
+      },
+      "actionGroupName": {
+        "value": [
+          "/subscriptions/5312-cbcc-4763-afb6-6f27bba693f1/resourceGroups/perficient-actiongroups-dev/providers/microsoft.insights/actiongroups/perficient-devops-email-dev"
+        ]
+      },
+      "appInsightsQuery": {
+        "value": "exceptions\n| extend a = parse_json(outerMessage)\n| extend b = parse_json(tostring(a.Payload))\n| where b.error_code != \"null\"\n// specify which code you want"
+      }
+    }
+  }
